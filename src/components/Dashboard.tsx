@@ -85,15 +85,15 @@ export default function Dashboard({ state, setView, studySet, setStudySet, custo
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto py-16 px-8 relative">
-      <header className="flex flex-col md:flex-row justify-between items-center gap-6 mb-16">
+    <div className="max-w-4xl mx-auto py-8 md:py-16 px-4 sm:px-8 relative">
+      <header className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12 md:mb-16">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-brand-accent rounded-lg flex items-center justify-center shadow-sm">
             <GraduationCap size={18} className="text-white" />
           </div>
           <h1 className="text-xl font-bold tracking-tight text-brand-text">StatusRecall</h1>
         </div>
-        <div className="flex items-center gap-8 text-sm text-brand-muted">
+        <div className="flex items-center gap-6 md:gap-8 text-xs md:text-sm text-brand-muted">
           <div className="flex items-center gap-2">New <span className="font-semibold text-brand-text">{stats.unstarted}</span></div>
           <div className="flex items-center gap-2">Learning <span className="font-semibold text-brand-text">{stats.learning}</span></div>
           <div className="flex items-center gap-2">Review <span className="font-semibold text-brand-text">{dueCards.length}</span></div>
@@ -103,19 +103,19 @@ export default function Dashboard({ state, setView, studySet, setStudySet, custo
       {/* Study Set Selector */}
       <div className="mb-12">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-[11px] font-bold text-brand-muted uppercase tracking-widest flex items-center gap-3">
+          <h2 className="text-[10px] md:text-[11px] font-bold text-brand-muted uppercase tracking-widest flex items-center gap-3">
             <Settings2 size={12} className="text-brand-accent" /> Select Practice Set
           </h2>
           {studySet === 'custom' && (
             <button 
               onClick={() => setIsModalOpen(true)}
-              className="text-[11px] font-bold text-brand-accent hover:underline flex items-center gap-1 uppercase tracking-widest"
+              className="text-[10px] md:text-[11px] font-bold text-brand-accent hover:underline flex items-center gap-1 uppercase tracking-widest"
             >
               <Filter size={12} /> Edit Custom Set
             </button>
           )}
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-3">
           {setOptions.map((option) => (
             <button
               key={option.id}
@@ -125,16 +125,16 @@ export default function Dashboard({ state, setView, studySet, setStudySet, custo
                   setIsModalOpen(true);
                 }
               }}
-              className={`p-4 rounded-2xl border-2 transition-all flex flex-col items-center text-center gap-1 ${
+              className={`p-3 md:p-4 rounded-xl md:rounded-2xl border-2 transition-all flex flex-col items-center text-center gap-1 ${
                 studySet === option.id 
                   ? "border-brand-accent bg-indigo-50/50 shadow-sm" 
                   : "border-brand-border hover:border-slate-300 bg-white"
               }`}
             >
-              <span className={`text-[12px] font-bold whitespace-nowrap ${studySet === option.id ? "text-brand-accent" : "text-brand-text"}`}>
+              <span className={`text-[11px] md:text-[12px] font-bold ${studySet === option.id ? "text-brand-accent" : "text-brand-text"}`}>
                 {option.label}
               </span>
-              <span className="text-[10px] text-brand-muted">{option.count} Codes</span>
+              <span className="text-[9px] md:text-[10px] text-brand-muted">{option.count} Codes</span>
             </button>
           ))}
         </div>
@@ -143,26 +143,26 @@ export default function Dashboard({ state, setView, studySet, setStudySet, custo
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
         <motion.div 
           layout
-          className="lg:col-span-12 glass-card p-12 rounded-[24px] flex flex-col items-center text-center shadow-md border-indigo-100"
+          className="lg:col-span-12 glass-card p-8 md:p-12 rounded-[24px] flex flex-col items-center text-center shadow-md border-indigo-100"
         >
-          <div className="bg-slate-100 text-brand-muted text-[11px] font-bold uppercase tracking-[0.1em] px-4 py-1 rounded-full mb-6"> 
+          <div className="bg-slate-100 text-brand-muted text-[10px] md:text-[11px] font-bold uppercase tracking-[0.1em] px-4 py-1 rounded-full mb-4 md:mb-6"> 
             Focus: {setOptions.find(o => o.id === studySet)?.label}
           </div>
-          <div className="text-8xl font-extrabold text-brand-text mb-6 tracking-tighter">
+          <div className="text-6xl md:text-8xl font-extrabold text-brand-text mb-4 md:mb-6 tracking-tighter">
             {dueCards.length}
           </div>
-          <p className="text-brand-muted max-w-sm mb-10 text-lg leading-relaxed">
+          <p className="text-brand-muted max-w-sm mb-8 md:mb-10 text-base md:text-lg leading-relaxed px-4">
             {studySet === 'custom' && customCodes.length === 0 
               ? "Your custom set is empty. Select some codes to start practicing."
               : dueCards.length > 0 
                 ? "You have cards due for review based on your spaced repetition schedule." 
                 : "Great job! You've reviewed all your cards for now."}
           </p>
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 w-full sm:w-auto px-4 sm:px-0">
             <button
               disabled={dueCards.length === 0}
               onClick={() => startSession('srs')}
-              className={`px-12 py-4 rounded-xl font-bold transition-all shadow-sm ${
+              className={`w-full sm:px-12 py-4 rounded-xl font-bold transition-all shadow-sm ${
                 dueCards.length > 0 
                   ? "bg-brand-accent text-white hover:bg-indigo-700 active:scale-95" 
                   : "bg-slate-100 text-slate-400 cursor-not-allowed"
@@ -172,14 +172,14 @@ export default function Dashboard({ state, setView, studySet, setStudySet, custo
             </button>
             <button
               onClick={() => startSession('practice')}
-              className="px-8 py-4 rounded-xl font-bold border-2 border-brand-accent text-brand-accent hover:bg-indigo-50 transition-all active:scale-95 shadow-sm"
+              className="w-full sm:px-8 py-4 rounded-xl font-bold border-2 border-brand-accent text-brand-accent hover:bg-indigo-50 transition-all active:scale-95 shadow-sm"
             >
               Practice All
             </button>
             {studySet === 'custom' && (
                <button 
                 onClick={() => setIsModalOpen(true)}
-                className="px-6 py-4 rounded-xl font-bold border border-brand-border hover:bg-slate-50 transition-all flex items-center gap-2"
+                className="w-full sm:w-auto px-6 py-4 rounded-xl font-bold border border-brand-border hover:bg-slate-50 transition-all flex items-center justify-center gap-2"
               >
                 <Settings2 size={18} />
               </button>

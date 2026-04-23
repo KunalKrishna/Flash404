@@ -47,9 +47,9 @@ export default function Flashcard({ card, currentLevel, onResult }: FlashcardPro
   const theme = getTheme(card.code);
 
   return (
-    <div className="flex flex-col items-center justify-center gap-12 w-full max-w-2xl mx-auto h-[600px]">
+    <div className="flex flex-col items-center justify-center gap-8 md:gap-12 w-full max-w-2xl mx-auto px-4 min-h-[500px] py-8">
       <div 
-        className="relative w-[520px] h-[320px] perspective-1000 cursor-pointer group"
+        className="relative w-full max-w-[520px] aspect-[5/3] perspective-1000 cursor-pointer group"
         onClick={handleFlip}
       >
         <motion.div
@@ -59,19 +59,19 @@ export default function Flashcard({ card, currentLevel, onResult }: FlashcardPro
           style={{ transformStyle: "preserve-3d" }}
         >
           {/* Front */}
-          <div className={`absolute inset-0 backface-hidden glass-card rounded-[24px] flex flex-col items-center justify-center p-10 text-center transition-colors duration-500 border-2 ${theme.lightBg} border-transparent`}>
-             <div className={`text-[11px] font-bold ${theme.text} bg-white px-3 py-1 rounded-full uppercase tracking-widest mb-6 shadow-sm`}> {theme.label} </div>
-             <div className="text-[84px] font-extrabold text-brand-text leading-none tracking-tighter">{card.code}</div>
-             <div className="mt-8 text-brand-muted text-xs opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
+          <div className={`absolute inset-0 backface-hidden glass-card rounded-[24px] flex flex-col items-center justify-center p-6 md:p-10 text-center transition-colors duration-500 border-2 ${theme.lightBg} border-transparent`}>
+             <div className={`text-[10px] md:text-[11px] font-bold ${theme.text} bg-white px-3 py-1 rounded-full uppercase tracking-widest mb-4 md:mb-6 shadow-sm`}> {theme.label} </div>
+             <div className="text-6xl md:text-[84px] font-extrabold text-brand-text leading-none tracking-tighter">{card.code}</div>
+             <div className="mt-6 md:mt-8 text-brand-muted text-[10px] md:text-xs opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-2">
                Click or Press Space to reveal
              </div>
           </div>
 
           {/* Back */}
-          <div className={`absolute inset-0 backface-hidden glass-card rounded-[24px] flex flex-col items-center justify-center p-10 text-center rotate-y-180 transition-colors duration-500 ${theme.lightBg}`}>
-            <div className={`text-[11px] font-bold ${theme.text} bg-white px-3 py-1 rounded-full uppercase tracking-widest mb-4 shadow-sm`}> {card.code} </div>
-            <div className="text-2xl font-bold text-brand-text mb-4 leading-tight">{card.title}</div>
-            <p className="text-brand-muted text-base leading-relaxed max-w-[400px]">{card.description}</p>
+          <div className={`absolute inset-0 backface-hidden glass-card rounded-[24px] flex flex-col items-center justify-center p-6 md:p-10 text-center rotate-y-180 transition-colors duration-500 ${theme.lightBg}`}>
+            <div className={`text-[10px] md:text-[11px] font-bold ${theme.text} bg-white px-3 py-1 rounded-full uppercase tracking-widest mb-3 md:mb-4 shadow-sm`}> {card.code} </div>
+            <div className="text-xl md:text-2xl font-bold text-brand-text mb-2 md:mb-4 leading-tight">{card.title}</div>
+            <p className="text-brand-muted text-sm md:text-base leading-relaxed max-w-[400px] line-clamp-4 md:line-clamp-none">{card.description}</p>
           </div>
         </motion.div>
       </div>
@@ -82,7 +82,7 @@ export default function Flashcard({ card, currentLevel, onResult }: FlashcardPro
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="flex gap-4"
+            className="grid grid-cols-2 md:flex gap-3 md:gap-4 w-full md:w-auto"
           >
             {[
               { id: 'again', label: 'Again', color: 'hover:border-red-400 hover:text-red-600', key: '1' },
@@ -93,10 +93,10 @@ export default function Flashcard({ card, currentLevel, onResult }: FlashcardPro
               <button
                 key={btn.id}
                 onClick={(e) => { e.stopPropagation(); onResult(btn.id as Difficulty); }}
-                className={`px-8 py-4 bg-white border border-brand-border rounded-xl font-bold flex flex-col items-center min-w-[110px] transition-all active:scale-95 group ${btn.color}`}
+                className={`px-4 md:px-8 py-3 md:py-4 bg-white border border-brand-border rounded-xl font-bold flex flex-col items-center md:min-w-[110px] transition-all active:scale-95 group ${btn.color}`}
               >
-                <span className="text-sm">{btn.label}</span>
-                <span className="text-[10px] text-brand-muted group-hover:text-inherit">
+                <span className="text-xs md:text-sm">{btn.label}</span>
+                <span className="text-[9px] md:text-[10px] text-brand-muted group-hover:text-inherit">
                   {getIntervalForDifficulty(currentLevel, btn.id as Difficulty)}
                 </span>
               </button>
@@ -107,9 +107,9 @@ export default function Flashcard({ card, currentLevel, onResult }: FlashcardPro
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="text-brand-muted text-xs font-medium bg-white px-4 py-2 rounded-full border border-brand-border shadow-sm flex items-center gap-2"
+            className="text-brand-muted text-[11px] font-medium bg-white px-4 py-2 rounded-full border border-brand-border shadow-sm flex items-center gap-2"
           >
-            Click or Press<kbd className="px-2 py-0.5 bg-slate-100 rounded text-[10px] border border-slate-200">Space</kbd> to reveal
+            Click or Press<kbd className="px-2 py-0.5 bg-slate-100 rounded text-[9px] border border-slate-200">Space</kbd> to reveal
           </motion.div>
         )}
       </AnimatePresence>

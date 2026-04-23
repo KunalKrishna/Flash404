@@ -263,18 +263,18 @@ export default function App() {
             className="h-screen flex flex-col relative overflow-hidden"
           >
             {/* Minimal Study Header */}
-            <header className="flex justify-between items-center px-12 py-8">
+            <header className="flex justify-between items-center px-6 py-4 md:px-12 md:py-8">
               <div className="flex items-center gap-3">
                 <div className="w-6 h-6 bg-brand-accent rounded-md" />
-                <span className="font-bold text-sm">Flash404</span>
+                <span className="font-bold text-xs md:text-sm">Flash404</span>
               </div>
               
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-4 md:gap-6">
                 <button 
                   onClick={resetSession}
-                  className="text-[11px] font-bold text-brand-muted hover:text-brand-text uppercase tracking-widest flex items-center gap-2 transition-colors"
+                  className="text-[10px] md:text-[11px] font-bold text-brand-muted hover:text-brand-text uppercase tracking-widest flex items-center gap-2 transition-colors"
                 >
-                  <X size={14} /> Quit Session
+                  <X size={14} /> <span className="hidden xs:inline">Quit Session</span><span className="xs:hidden">Quit</span>
                 </button>
               </div>
             </header>

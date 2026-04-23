@@ -53,9 +53,9 @@ export default function ListView({ state, setView }: ListViewProps) {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-16 px-8">
-      <div className="flex flex-col md:flex-row items-center justify-between mb-12 gap-6">
-        <div className="flex items-center gap-4">
+    <div className="max-w-4xl mx-auto py-8 md:py-16 px-4 sm:px-8">
+      <div className="flex flex-col md:flex-row items-center justify-between mb-8 md:mb-12 gap-6">
+        <div className="flex items-center gap-4 w-full md:w-auto">
           <button 
             onClick={() => setView('dashboard')}
             className="w-10 h-10 glass-card rounded-full flex items-center justify-center text-brand-muted hover:text-brand-text transition-colors shadow-sm"
@@ -76,23 +76,23 @@ export default function ListView({ state, setView }: ListViewProps) {
         </div>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-4 md:space-y-6">
         {groups.map((group) => (
           <div key={group.id} className="glass-card rounded-[24px] overflow-hidden">
             <button
               onClick={() => toggleCategory(group.id)}
-              className="w-full px-8 py-6 flex items-center justify-between hover:bg-slate-50 transition-colors text-left"
+              className="w-full px-6 md:px-8 py-5 md:py-6 flex items-center justify-between hover:bg-slate-50 transition-colors text-left"
             >
-              <div className="flex items-center gap-4">
-                <div className={`w-2 h-2 rounded-full ${group.color.replace('text', 'bg')}`} />
-                <span className={`text-sm font-bold uppercase tracking-widest ${group.color}`}>
+              <div className="flex items-center gap-3 md:gap-4 overflow-hidden">
+                <div className={`shrink-0 w-2 h-2 rounded-full ${group.color.replace('text', 'bg')}`} />
+                <span className={`text-[11px] md:text-sm font-bold uppercase tracking-widest truncate ${group.color}`}>
                   {group.label}
                 </span>
-                <span className="text-xs text-brand-muted font-medium bg-slate-100 px-2 py-0.5 rounded-full">
-                  {group.items.length} codes
+                <span className="shrink-0 text-[10px] md:text-xs text-brand-muted font-medium bg-slate-100 px-2 py-0.5 rounded-full">
+                  {group.items.length} 
                 </span>
               </div>
-              {expanded[group.id] ? <ChevronUp size={18} className="text-brand-muted" /> : <ChevronDown size={18} className="text-brand-muted" />}
+              {expanded[group.id] ? <ChevronUp size={16} className="text-brand-muted" /> : <ChevronDown size={16} className="text-brand-muted" />}
             </button>
             <AnimatePresence>
               {expanded[group.id] && (
@@ -102,22 +102,22 @@ export default function ListView({ state, setView }: ListViewProps) {
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.3, ease: "easeInOut" }}
                 >
-                  <div className="px-8 pb-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="px-4 md:px-8 pb-6 md:pb-8 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                     {group.items.map((card) => {
                       const srsCard = state.cards[card.code];
                       return (
-                        <div key={card.code} className="p-5 border border-brand-border rounded-[20px] flex items-start gap-4 hover:border-brand-accent/30 transition-all group bg-white/50">
-                          <div className="text-3xl font-extrabold text-brand-text tracking-tighter opacity-60 group-hover:opacity-100 transition-opacity">
+                        <div key={card.code} className="p-4 md:p-5 border border-brand-border rounded-[20px] flex items-start gap-4 hover:border-brand-accent/30 transition-all group bg-white/50">
+                          <div className="text-2xl md:text-3xl font-extrabold text-brand-text tracking-tighter opacity-60 group-hover:opacity-100 transition-opacity">
                             {card.code}
                           </div>
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between mb-1">
-                              <h3 className="font-bold text-xs text-brand-text">{card.title}</h3>
-                              <span className={`text-[8px] font-black px-1.5 py-0.5 rounded-full border ${getLevelColor(srsCard.level)}`}>
+                          <div className="flex-1 overflow-hidden">
+                            <div className="flex items-center justify-between mb-1 gap-2">
+                              <h3 className="font-bold text-[11px] md:text-xs text-brand-text truncate">{card.title}</h3>
+                              <span className={`shrink-0 text-[8px] font-black px-1.5 py-0.5 rounded-full border ${getLevelColor(srsCard.level)}`}>
                                 {srsCard.level === 5 ? "MASTERED" : srsCard.level === 0 ? "NEW" : `LVL ${srsCard.level}`}
                               </span>
                             </div>
-                            <p className="text-[11px] text-brand-muted leading-relaxed line-clamp-2">{card.description}</p>
+                            <p className="text-[10px] md:text-[11px] text-brand-muted leading-relaxed line-clamp-2">{card.description}</p>
                           </div>
                         </div>
                       );

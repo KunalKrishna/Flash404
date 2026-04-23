@@ -68,6 +68,47 @@ The core of the application is the Spaced Repetition System. The following diagr
 
 ---
 
+## DEPLOYMENT (Firebase Hosting)
+
+To host Flash404 independently on your own Google Cloud/Firebase project:
+
+### 1. Project Initialization
+- **GitHub**: Export your code to a repository and clone it locally.
+- **Console**: Create a new project in the [Firebase Console](https://console.firebase.google.com/).
+- **Provision**: Enable **Authentication** (Google Provider) and **Cloud Firestore** in your preferred region.
+
+### 2. Local Configuration
+Since `firebase-applet-config.json` is ignored by Git, you must create it manually in the project root:
+
+```json
+{
+  "projectId": "your-project-id",
+  "appId": "your-app-id",
+  "apiKey": "your-api-key",
+  "authDomain": "your-project-id.firebaseapp.com",
+  "firestoreDatabaseId": "(default)",
+  "storageBucket": "your-project-id.firebasestorage.app",
+  "messagingSenderId": "your-sender-id"
+}
+```
+*You can find these values in your Firebase Console under **Project Settings > General > Your apps**.*
+
+### 3. Tooling & Initialization
+- **Install Dependencies**: Run `npm install` to download required libraries (Vite, React, etc.).
+- **Install Firebase CLI**: `npm install -g firebase-tools`.
+- **Login**: `firebase login`.
+- **Init**: `firebase init hosting`.
+  - Select your project from the list.
+  - Public directory: `dist`.
+  - Configure as SPA: `Yes`.
+
+### 4. Build & Publish
+- **Build**: `npm run build`.
+- **Deploy**: `firebase deploy --only hosting`.
+- **Authorize**: Add your new hosting URL to the **Authorized Domains** list in **Authentication > Settings**.
+
+---
+
 ## PROGRESSIVE ENHANCEMENT SUMMARY
 
 The application evolved through a series of tactical enhancements to transition from a simple flashcard tool to a comprehensive study platform:
