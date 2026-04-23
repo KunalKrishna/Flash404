@@ -4,9 +4,9 @@
  */
 
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { View, SRSState, Difficulty } from './types';
+import { View, SRSState, Difficulty, StudySetId } from './types';
 import { getInitialState, updateCard, getDueCards } from './lib/srs';
-import { HTTP_STATUS_CODES } from './constants';
+import { HTTP_STATUS_CODES, STUDY_SETS } from './constants';
 import Dashboard from './components/Dashboard';
 import Flashcard from './components/Flashcard';
 import ListView from './components/ListView';
@@ -17,8 +17,18 @@ export default function App() {
   const [view, setView] = useState<View>('dashboard');
   const [state, setState] = useState<SRSState>(getInitialState());
   const [sessionIndex, setSessionIndex] = useState(0);
+  const [studySet, setStudySet] = useState<StudySetId>('all');
 
-  const dueCards = useMemo(() => getDueCards(state), [state]);
+  const studySetCodes = useMemo(() => {
+    switch (studySet) {
+      case 'top10': return STUDY_SETS.TOP_10;
+      case 'top16': return STUDY_SETS.TOP_16;
+      case 'top20': return STUDY_SETS.TOP_20;
+      default: return undefined;
+    }
+  }, [studySet]);
+
+  const dueCards = useMemo(() => getDueCards(state, studySetCodes), [state, studySetCodes]);
   const currentDueCard = dueCards[sessionIndex];
 
   const handleResult = useCallback((difficulty: Difficulty) => {
@@ -52,7 +62,12 @@ export default function App() {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
           >
-            <Dashboard state={state} setView={setView} />
+            <Dashboard 
+              state={state} 
+              setView={setView} 
+              studySet={studySet} 
+              setStudySet={setStudySet} 
+            />
           </motion.div>
         )}
 

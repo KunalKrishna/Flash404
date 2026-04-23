@@ -1,17 +1,29 @@
 import { motion } from "motion/react";
-import { HTTP_STATUS_CODES } from "../constants";
+import { HTTP_STATUS_CODES, STUDY_SETS } from "../constants";
 import { getDueCards, getStats } from "../lib/srs";
-import { SRSState, View } from "../types";
-import { Play, List, Trophy, GraduationCap, Clock, BookOpen } from "lucide-react";
+import { SRSState, View, StudySetId } from "../types";
+import { Play, List, Trophy, GraduationCap, Clock, BookOpen, Settings2 } from "lucide-react";
+import { useMemo } from "react";
 
 interface DashboardProps {
   state: SRSState;
   setView: (view: View) => void;
+  studySet: StudySetId;
+  setStudySet: (set: StudySetId) => void;
 }
 
-export default function Dashboard({ state, setView }: DashboardProps) {
-  const stats = getStats(state);
-  const dueCards = getDueCards(state);
+export default function Dashboard({ state, setView, studySet, setStudySet }: DashboardProps) {
+  const studySetCodes = useMemo(() => {
+    switch (studySet) {
+      case 'top10': return STUDY_SETS.TOP_10;
+      case 'top16': return STUDY_SETS.TOP_16;
+      case 'top20': return STUDY_SETS.TOP_20;
+      default: return undefined;
+    }
+  }, [studySet]);
+
+  const stats = getStats(state, studySetCodes);
+  const dueCards = getDueCards(state, studySetCodes);
 
   const levelColors = [
     "bg-slate-200", // Not started
@@ -23,6 +35,13 @@ export default function Dashboard({ state, setView }: DashboardProps) {
   ];
 
   const levelLabels = ["New", "Level 1", "Level 2", "Level 3", "Level 4", "Mastered"];
+
+  const setOptions: { id: StudySetId; label: string; count: number }[] = [
+    { id: 'all', label: 'Default (All 62)', count: 62 },
+    { id: 'top10', label: '10 Most Important', count: 10 },
+    { id: 'top16', label: '16 Most Important', count: 16 },
+    { id: 'top20', label: '20 Most Important', count: 20 },
+  ];
 
   return (
     <div className="max-w-4xl mx-auto py-16 px-8">
@@ -40,11 +59,39 @@ export default function Dashboard({ state, setView }: DashboardProps) {
         </div>
       </header>
 
+      {/* Study Set Selector */}
+      <div className="mb-12">
+        <h2 className="text-[11px] font-bold text-brand-muted uppercase tracking-widest mb-6 flex items-center gap-3">
+          <Settings2 size={12} className="text-brand-accent" /> Select Practice Set
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+          {setOptions.map((option) => (
+            <button
+              key={option.id}
+              onClick={() => setStudySet(option.id)}
+              className={`p-4 rounded-2xl border-2 transition-all flex flex-col items-center text-center gap-1 ${
+                studySet === option.id 
+                  ? "border-brand-accent bg-indigo-50/50 shadow-sm" 
+                  : "border-brand-border hover:border-slate-300 bg-white"
+              }`}
+            >
+              <span className={`text-[13px] font-bold ${studySet === option.id ? "text-brand-accent" : "text-brand-text"}`}>
+                {option.label}
+              </span>
+              <span className="text-[10px] text-brand-muted">{option.count} Codes</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
         <motion.div 
-          className="lg:col-span-12 glass-card p-12 rounded-[24px] flex flex-col items-center text-center"
+          layout
+          className="lg:col-span-12 glass-card p-12 rounded-[24px] flex flex-col items-center text-center shadow-md border-indigo-100"
         >
-          <div className="bg-slate-100 text-brand-muted text-[11px] font-bold uppercase tracking-[0.1em] px-3 py-1 rounded-full mb-6"> Active Review </div>
+          <div className="bg-slate-100 text-brand-muted text-[11px] font-bold uppercase tracking-[0.1em] px-3 py-1 rounded-full mb-6"> 
+            Active Session: {setOptions.find(o => o.id === studySet)?.label}
+          </div>
           <div className="text-8xl font-extrabold text-brand-text mb-6 tracking-tighter">
             {dueCards.length}
           </div>
@@ -72,7 +119,7 @@ export default function Dashboard({ state, setView }: DashboardProps) {
             <span className="text-[11px] font-bold text-brand-muted uppercase tracking-widest mb-4">Completion</span>
             <div className="text-4xl font-extrabold text-brand-text mb-2">{Math.round((stats.mastered / stats.total) * 100)}%</div>
             <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden mt-auto">
-              <div className="h-full bg-indigo-500" style={{ width: `${(stats.mastered / stats.total) * 100}%` }} />
+              <div className="h-full bg-indigo-500" style={{ width: `${(stats.mastered / (stats.total || 1)) * 100}%` }} />
             </div>
           </div>
           

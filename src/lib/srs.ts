@@ -98,15 +98,26 @@ export function getIntervalForDifficulty(level: number, difficulty: Difficulty):
   return `${days}d`;
 }
 
-export function getDueCards(state: SRSState): SRSCard[] {
+export function getDueCards(state: SRSState, codes?: number[]): SRSCard[] {
   const now = Date.now();
-  return (Object.values(state.cards) as SRSCard[])
+  let cardList = Object.values(state.cards) as SRSCard[];
+  
+  if (codes) {
+    cardList = cardList.filter(c => codes.includes(c.code));
+  }
+
+  return cardList
     .filter((card) => card.nextReview <= now)
     .sort((a, b) => a.nextReview - b.nextReview);
 }
 
-export function getStats(state: SRSState) {
-  const cardList = Object.values(state.cards) as SRSCard[];
+export function getStats(state: SRSState, codes?: number[]) {
+  let cardList = Object.values(state.cards) as SRSCard[];
+  
+  if (codes) {
+    cardList = cardList.filter(c => codes.includes(c.code));
+  }
+
   const total = cardList.length;
   const levels = [0, 0, 0, 0, 0, 0];
   cardList.forEach(c => levels[c.level]++);

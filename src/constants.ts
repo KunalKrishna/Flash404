@@ -73,3 +73,9 @@ export const HTTP_STATUS_CODES: HTTPStatusCode[] = [
   { code: 510, title: "Not Extended", description: "Further extensions to the request are required for the server to fulfil it." },
   { code: 511, title: "Network Authentication Required", description: "The client needs to authenticate to gain network access." },
 ];
+
+export const STUDY_SETS = {
+  TOP_10: [200, 201, 204, 400, 401, 403, 404, 409, 500, 503],
+  TOP_16: [200, 201, 204, 304, 400, 401, 403, 404, 405, 409, 415, 422, 429, 500, 503, 504],
+  TOP_20: [200, 201, 202, 204, 304, 308, 400, 401, 403, 404, 405, 409, 413, 415, 422, 429, 500, 502, 503, 504],
+};
