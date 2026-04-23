@@ -4,8 +4,8 @@
  */
 
 import { useState, useCallback, useMemo, useEffect } from 'react';
-import { View, SRSState, Difficulty, StudySetId } from './types';
-import { getInitialState, updateCard, getDueCards } from './lib/srs';
+import { View, SRSState, Difficulty, StudySetId, SessionMode } from './types';
+import { getInitialState, updateCard, getDueCards, getPracticeCards } from './lib/srs';
 import { HTTP_STATUS_CODES, STUDY_SETS } from './constants';
 import Dashboard from './components/Dashboard';
 import Flashcard from './components/Flashcard';
@@ -18,6 +18,7 @@ export default function App() {
   const [state, setState] = useState<SRSState>(getInitialState());
   const [sessionIndex, setSessionIndex] = useState(0);
   const [studySet, setStudySet] = useState<StudySetId>('all');
+  const [sessionMode, setSessionMode] = useState<SessionMode>('srs');
   const [customCodes, setCustomCodes] = useState<number[]>(() => {
     const saved = localStorage.getItem('http_status_custom_set');
     return saved ? JSON.parse(saved) : [];
@@ -37,8 +38,14 @@ export default function App() {
     }
   }, [studySet, customCodes]);
 
-  const dueCards = useMemo(() => getDueCards(state, studySetCodes), [state, studySetCodes]);
-  const currentDueCard = dueCards[sessionIndex];
+  const sessionCards = useMemo(() => {
+    if (sessionMode === 'srs') {
+      return getDueCards(state, studySetCodes);
+    }
+    return getPracticeCards(state, studySetCodes);
+  }, [state, studySetCodes, sessionMode]);
+
+  const currentDueCard = sessionCards[sessionIndex];
 
   const handleResult = useCallback((difficulty: Difficulty) => {
     if (currentDueCard) {
@@ -47,6 +54,12 @@ export default function App() {
       setSessionIndex(prev => prev + 1);
     }
   }, [currentDueCard, state]);
+
+  const startSession = useCallback((mode: SessionMode) => {
+    setSessionMode(mode);
+    setSessionIndex(0);
+    setView('study');
+  }, []);
 
   const resetSession = useCallback(() => {
     setSessionIndex(0);
@@ -58,7 +71,7 @@ export default function App() {
     return HTTP_STATUS_CODES.find(c => c.code === currentDueCard.code) || null;
   }, [currentDueCard]);
 
-  const isSessionComplete = sessionIndex >= dueCards.length && dueCards.length > 0;
+  const isSessionComplete = sessionIndex >= sessionCards.length && sessionCards.length > 0;
 
   return (
     <div className="min-h-screen bg-brand-bg text-brand-text selection:bg-indigo-100 selection:text-indigo-900">
@@ -78,6 +91,7 @@ export default function App() {
               setStudySet={setStudySet} 
               customCodes={customCodes}
               setCustomCodes={setCustomCodes}
+              startSession={startSession}
             />
           </motion.div>
         )}
@@ -155,11 +169,11 @@ export default function App() {
             </main>
 
             {/* Sticky bottom progress bar */}
-            {dueCards.length > 0 && (
+            {sessionCards.length > 0 && !isSessionComplete && (
               <div className="absolute bottom-0 left-0 w-full h-[6px] bg-slate-200">
                 <motion.div 
                   initial={false}
-                  animate={{ width: `${(sessionIndex / dueCards.length) * 100}%` }}
+                  animate={{ width: `${(sessionIndex / sessionCards.length) * 100}%` }}
                   className="h-full bg-brand-accent shadow-[0_0_10px_rgba(79,70,229,0.3)]"
                 />
               </div>

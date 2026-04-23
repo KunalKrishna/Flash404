@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "motion/react";
 import { HTTP_STATUS_CODES, STUDY_SETS } from "../constants";
 import { getDueCards, getStats } from "../lib/srs";
-import { SRSState, View, StudySetId } from "../types";
+import { SRSState, View, StudySetId, SessionMode } from "../types";
 import { Play, List, Trophy, GraduationCap, Clock, BookOpen, Settings2, X as CloseIcon, Filter, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
 import { useMemo, useState } from "react";
 
@@ -12,6 +12,7 @@ interface DashboardProps {
   setStudySet: (set: StudySetId) => void;
   customCodes: number[];
   setCustomCodes: (codes: number[]) => void;
+  startSession: (mode: SessionMode) => void;
 }
 
 const CATEGORIES = [
@@ -22,7 +23,7 @@ const CATEGORIES = [
   { id: "5xx", label: "Server Error (5XX)", range: [500, 599], color: "text-violet-500" },
 ];
 
-export default function Dashboard({ state, setView, studySet, setStudySet, customCodes, setCustomCodes }: DashboardProps) {
+export default function Dashboard({ state, setView, studySet, setStudySet, customCodes, setCustomCodes, startSession }: DashboardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalExpanded, setModalExpanded] = useState<Record<string, boolean>>({
     "1xx": true,
@@ -61,7 +62,7 @@ export default function Dashboard({ state, setView, studySet, setStudySet, custo
   const levelLabels = ["New", "Level 1", "Level 2", "Level 3", "Level 4", "Mastered"];
 
   const setOptions: { id: StudySetId; label: string; count: number }[] = [
-    { id: 'all', label: 'Default (All 62)', count: 62 },
+    { id: 'all', label: 'Default', count: 62 },
     { id: 'top10', label: '10 Important', count: 10 },
     { id: 'top16', label: '16 Important', count: 16 },
     { id: 'top20', label: '20 Important', count: 20 },
@@ -160,14 +161,20 @@ export default function Dashboard({ state, setView, studySet, setStudySet, custo
           <div className="flex gap-4">
             <button
               disabled={dueCards.length === 0}
-              onClick={() => setView('study')}
+              onClick={() => startSession('srs')}
               className={`px-12 py-4 rounded-xl font-bold transition-all shadow-sm ${
                 dueCards.length > 0 
                   ? "bg-brand-accent text-white hover:bg-indigo-700 active:scale-95" 
                   : "bg-slate-100 text-slate-400 cursor-not-allowed"
               }`}
             >
-              {dueCards.length > 0 ? "Start Session" : "Nothing Due"}
+              {dueCards.length > 0 ? "Review Due" : "Nothing Due"}
+            </button>
+            <button
+              onClick={() => startSession('practice')}
+              className="px-8 py-4 rounded-xl font-bold border-2 border-brand-accent text-brand-accent hover:bg-indigo-50 transition-all active:scale-95 shadow-sm"
+            >
+              Practice All
             </button>
             {studySet === 'custom' && (
                <button 

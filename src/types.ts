@@ -19,3 +19,5 @@ export type View = 'dashboard' | 'study' | 'list';
 export type Difficulty = 'again' | 'hard' | 'good' | 'easy';
 
 export type StudySetId = 'all' | 'top10' | 'top16' | 'top20' | 'custom';
+
+export type SessionMode = 'srs' | 'practice';

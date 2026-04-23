@@ -111,6 +111,17 @@ export function getDueCards(state: SRSState, codes?: number[]): SRSCard[] {
     .sort((a, b) => a.nextReview - b.nextReview);
 }
 
+export function getPracticeCards(state: SRSState, codes?: number[]): SRSCard[] {
+  let cardList = Object.values(state.cards) as SRSCard[];
+  
+  if (codes) {
+    cardList = cardList.filter(c => codes.includes(c.code));
+  }
+
+  // Randomize practice cards for variety
+  return [...cardList].sort(() => Math.random() - 0.5);
+}
+
 export function getStats(state: SRSState, codes?: number[]) {
   let cardList = Object.values(state.cards) as SRSCard[];
   
