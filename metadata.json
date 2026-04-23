@@ -1,0 +1,6 @@
+{
+  "name": "HTTP Status Master",
+  "description": "Master HTTP response status codes using spaced repetition and active recall.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
