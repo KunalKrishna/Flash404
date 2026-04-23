@@ -1,0 +1,30 @@
+{
+  "entities": {
+    "UserProgress": {
+      "title": "User Progress",
+      "description": "Stores SRS card data and custom study set for a user",
+      "type": "object",
+      "properties": {
+        "cards": {
+          "type": "object",
+          "description": "Map of status code to card data"
+        },
+        "customCodes": {
+          "type": "array",
+          "description": "List of custom selected status codes"
+        },
+        "lastUpdated": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["cards", "customCodes"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProgress",
+      "description": "User specific progress and settings"
+    }
+  }
+}
