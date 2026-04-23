@@ -8,7 +8,7 @@
 ## SRS LOGIC
 The core of the application is the Spaced Repetition System. The following diagram illustrates the relationship between user actions (Again, Hard, Good, Easy) and the card levels (0-5).
 
-![SRS State Transition Diagram](https://mermaid.ai/d/4ab49c9b-85ba-4332-8e53-d4fa53c330b5)
+![SRS State Transition Diagram](assets/Flash404%20-%20transition%20diagram.png)
 
 ---
 

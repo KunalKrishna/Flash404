@@ -10,11 +10,11 @@ interface ListViewProps {
 }
 
 const CATEGORIES = [
-  { id: "1xx", label: "Informational (1XX)", range: [100, 199], color: "text-blue-500" },
-  { id: "2xx", label: "Success (2XX)", range: [200, 299], color: "text-emerald-500" },
-  { id: "3xx", label: "Redirect (3XX)", range: [300, 399], color: "text-amber-500" },
-  { id: "4xx", label: "Client Error (4XX)", range: [400, 499], color: "text-rose-500" },
-  { id: "5xx", label: "Server Error (5XX)", range: [500, 599], color: "text-violet-500" },
+  { id: "1xx", label: "Informational (1XX) ℹ️💡", range: [100, 199], color: "text-blue-500" },
+  { id: "2xx", label: "Success (2XX) 🆗✅", range: [200, 299], color: "text-emerald-500" },
+  { id: "3xx", label: "Redirect (3XX) 🔀🚧", range: [300, 399], color: "text-amber-500" },
+  { id: "4xx", label: "Client Error (4XX) 👨🏻‍🚫", range: [400, 499], color: "text-rose-500" },
+  { id: "5xx", label: "Server Error (5XX) 💻🚫", range: [500, 599], color: "text-violet-500" },
 ];
 
 export default function ListView({ state, setView }: ListViewProps) {

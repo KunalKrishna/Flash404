@@ -37,11 +37,11 @@ export default function Flashcard({ card, currentLevel, onResult }: FlashcardPro
   }, [handleFlip, isFlipped, onResult]);
 
   const getTheme = (code: number) => {
-    if (code >= 100 && code < 200) return { label: "Informational (1xx)", bg: "bg-blue-500", text: "text-blue-500", lightBg: "bg-blue-50" };
-    if (code >= 200 && code < 300) return { label: "Success (2xx)", bg: "bg-emerald-500", text: "text-emerald-500", lightBg: "bg-emerald-50" };
-    if (code >= 300 && code < 400) return { label: "Redirection (3xx)", bg: "bg-amber-500", text: "text-amber-500", lightBg: "bg-amber-50" };
-    if (code >= 400 && code < 500) return { label: "Client Error (4xx)", bg: "bg-rose-500", text: "text-rose-500", lightBg: "bg-rose-50" };
-    return { label: "Server Error (5xx)", bg: "bg-violet-500", text: "text-violet-500", lightBg: "bg-violet-50" };
+    if (code >= 100 && code < 200) return { label: "Informational (1xx) ℹ️💡", bg: "bg-blue-500", text: "text-blue-500", lightBg: "bg-blue-50" };
+    if (code >= 200 && code < 300) return { label: "Success (2xx) 🆗✅", bg: "bg-emerald-500", text: "text-emerald-500", lightBg: "bg-emerald-50" };
+    if (code >= 300 && code < 400) return { label: "Redirection (3xx) 🔀🚧", bg: "bg-amber-500", text: "text-amber-500", lightBg: "bg-amber-50" };
+    if (code >= 400 && code < 500) return { label: "Client Error (4xx) 👨🏻‍🚫", bg: "bg-rose-500", text: "text-rose-500", lightBg: "bg-rose-50" };
+    return { label: "Server Error (5xx) 💻🚫", bg: "bg-violet-500", text: "text-violet-500", lightBg: "bg-violet-50" };
   };
 
   const theme = getTheme(card.code);
@@ -109,7 +109,7 @@ export default function Flashcard({ card, currentLevel, onResult }: FlashcardPro
             exit={{ opacity: 0 }}
             className="text-brand-muted text-xs font-medium bg-white px-4 py-2 rounded-full border border-brand-border shadow-sm flex items-center gap-2"
           >
-            <kbd className="px-2 py-0.5 bg-slate-100 rounded text-[10px] border border-slate-200">Space</kbd> to reveal
+            Click or Press<kbd className="px-2 py-0.5 bg-slate-100 rounded text-[10px] border border-slate-200">Space</kbd> to reveal
           </motion.div>
         )}
       </AnimatePresence>
