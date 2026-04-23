@@ -18,15 +18,24 @@ export default function App() {
   const [state, setState] = useState<SRSState>(getInitialState());
   const [sessionIndex, setSessionIndex] = useState(0);
   const [studySet, setStudySet] = useState<StudySetId>('all');
+  const [customCodes, setCustomCodes] = useState<number[]>(() => {
+    const saved = localStorage.getItem('http_status_custom_set');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('http_status_custom_set', JSON.stringify(customCodes));
+  }, [customCodes]);
 
   const studySetCodes = useMemo(() => {
     switch (studySet) {
       case 'top10': return STUDY_SETS.TOP_10;
       case 'top16': return STUDY_SETS.TOP_16;
       case 'top20': return STUDY_SETS.TOP_20;
+      case 'custom': return customCodes;
       default: return undefined;
     }
-  }, [studySet]);
+  }, [studySet, customCodes]);
 
   const dueCards = useMemo(() => getDueCards(state, studySetCodes), [state, studySetCodes]);
   const currentDueCard = dueCards[sessionIndex];
@@ -67,6 +76,8 @@ export default function App() {
               setView={setView} 
               studySet={studySet} 
               setStudySet={setStudySet} 
+              customCodes={customCodes}
+              setCustomCodes={setCustomCodes}
             />
           </motion.div>
         )}
