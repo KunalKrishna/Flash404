@@ -91,7 +91,7 @@ export default function Dashboard({ state, setView, studySet, setStudySet, custo
           <div className="w-8 h-8 bg-brand-accent rounded-lg flex items-center justify-center shadow-sm">
             <GraduationCap size={18} className="text-white" />
           </div>
-          <h1 className="text-xl font-bold tracking-tight text-brand-text">StatusRecall</h1>
+          <h1 className="text-xl font-bold tracking-tight text-brand-text">Flash404</h1>
         </div>
         <div className="flex items-center gap-6 md:gap-8 text-xs md:text-sm text-brand-muted">
           <div className="flex items-center gap-2">New <span className="font-semibold text-brand-text">{stats.unstarted}</span></div>
