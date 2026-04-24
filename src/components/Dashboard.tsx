@@ -2,8 +2,9 @@ import { motion, AnimatePresence } from "motion/react";
 import { HTTP_STATUS_CODES, STUDY_SETS } from "../constants";
 import { getDueCards, getStats } from "../lib/srs";
 import { SRSState, View, StudySetId, SessionMode } from "../types";
-import { Play, List, Trophy, GraduationCap, Clock, BookOpen, Settings2, X as CloseIcon, Filter, CheckCircle2, ChevronDown, ChevronUp } from "lucide-react";
+import { Play, List, Trophy, Library, Clock, BookOpen, Settings2, X as CloseIcon, Filter, CheckCircle2, ChevronDown, ChevronUp, ExternalLink, Linkedin } from "lucide-react";
 import { useMemo, useState } from "react";
+import links from "../links.json";
 
 interface DashboardProps {
   state: SRSState;
@@ -89,7 +90,7 @@ export default function Dashboard({ state, setView, studySet, setStudySet, custo
       <header className="flex flex-col md:flex-row justify-between items-center gap-6 mb-12 md:mb-16">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-brand-accent rounded-lg flex items-center justify-center shadow-sm">
-            <GraduationCap size={18} className="text-white" />
+            <Library size={18} className="text-white" />
           </div>
           <h1 className="text-xl font-bold tracking-tight text-brand-text">Flash404</h1>
         </div>
@@ -343,6 +344,32 @@ export default function Dashboard({ state, setView, studySet, setStudySet, custo
             ))}
           </div>
       </div>
+
+      <footer className="mt-16 pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-6">
+        <p className="text-[10px] font-bold text-brand-muted uppercase tracking-[0.2em]">
+          Designed & Built by Kunal Krishna
+        </p>
+        <div className="flex items-center gap-6">
+          <a 
+            href={links.portfolio} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-[10px] font-bold text-brand-muted hover:text-brand-accent transition-colors uppercase tracking-widest group"
+          >
+            <ExternalLink size={12} className="group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
+            Portfolio
+          </a>
+          <a 
+            href={links.linkedin} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-[10px] font-bold text-brand-muted hover:text-brand-accent transition-colors uppercase tracking-widest group"
+          >
+            <Linkedin size={12} className="group-hover:scale-110 transition-transform" />
+            LinkedIn
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }

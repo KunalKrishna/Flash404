@@ -11,10 +11,12 @@ import Dashboard from './components/Dashboard';
 import Flashcard from './components/Flashcard';
 import ListView from './components/ListView';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Trophy, LogIn, LogOut, User as UserIcon } from 'lucide-react';
+import { X, Trophy, LogIn, LogOut, User as UserIcon, Library } from 'lucide-react';
 import { auth, signInWithGoogle, signOut, db } from './lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { doc, onSnapshot, setDoc, serverTimestamp } from 'firebase/firestore';
+import links from './links.json';
+import { Github } from 'lucide-react';
 
 export default function App() {
   const [view, setView] = useState<View>('dashboard');
@@ -230,6 +232,18 @@ export default function App() {
               )}
             </div>
 
+            <div className="max-w-4xl mx-auto px-8 mt-2 flex justify-end">
+              <a 
+                href={links.github} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-[10px] font-bold text-brand-muted hover:text-brand-accent transition-colors uppercase tracking-widest group"
+              >
+                <Github size={12} className="group-hover:rotate-12 transition-transform" />
+                Contribute on GitHub
+              </a>
+            </div>
+
             <Dashboard 
               state={state} 
               setView={setView} 
@@ -265,7 +279,9 @@ export default function App() {
             {/* Minimal Study Header */}
             <header className="flex justify-between items-center px-6 py-4 md:px-12 md:py-8">
               <div className="flex items-center gap-3">
-                <div className="w-6 h-6 bg-brand-accent rounded-md" />
+                <div className="w-6 h-6 bg-brand-accent rounded-md flex items-center justify-center">
+                  <Library size={12} className="text-white" />
+                </div>
                 <span className="font-bold text-xs md:text-sm">Flash404</span>
               </div>
               
